@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BarberShopWeb.Models;
 
-namespace BarberShop.Pages.ServicePages;
+namespace BarberShop.Pages.Services;
 
 public class DetailsModel : PageModel
 {
     private readonly ApplicationDbContext _context;
+
     public DetailsModel(ApplicationDbContext context)
     {
         _context = context;
@@ -15,14 +16,15 @@ public class DetailsModel : PageModel
 
     public Service Service { get; set; } = default!;
 
-    public async Task<IActionResult> OnGetAsync(int? serviceid)
+    // Đã đổi từ serviceid thành id để khớp hoàn toàn với Frontend
+    public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (serviceid is null)
+        if (id is null)
         {
             return NotFound();
         }
 
-        var service = await _context.Services.FirstOrDefaultAsync(m => m.ServiceID == serviceid);
+        var service = await _context.Services.FirstOrDefaultAsync(m => m.ServiceID == id);
         if (service is null)
         {
             return NotFound();

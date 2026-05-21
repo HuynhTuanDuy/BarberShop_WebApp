@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BarberShopWeb.Models;
 
-namespace BarberShop.Pages.ServicePages;
+namespace BarberShop.Pages.Services;
 
 public class CreateModel : PageModel
 {

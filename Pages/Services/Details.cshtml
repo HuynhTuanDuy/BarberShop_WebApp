@@ -1,31 +1,96 @@
-@page
-@model BarberShop.Pages.ServicePages.DetailsModel
+@page "{id:int}"
+@model BarberShop.Pages.Services.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi Tiết Dịch Vụ";
 }
 
-<h1>Details</h1>
+<style>
+    body {
+        background-color: #131313;
+        color: #e5e2e1;
+        font-family: 'Inter', sans-serif;
+    }
 
-<div>
-    <h4>Service</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Service.ServiceName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Service.ServiceName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Service.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Service.Price)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Service.ServiceID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .text-gold {
+        color: #f2ca50 !important;
+    }
+
+    .bg-gold {
+        background-color: #f2ca50;
+        color: #3c2f00;
+        border: none;
+    }
+
+        .bg-gold:hover {
+            background-color: #d4af37;
+            color: #241a00;
+        }
+
+    .btn-outline-gold {
+        border: 1px solid #4d4635;
+        color: #d0c5af;
+        transition: all 0.2s;
+    }
+
+        .btn-outline-gold:hover {
+            background-color: #4d4635;
+            color: #f2ca50;
+        }
+
+    .card-dark-premium {
+        background-color: #1e1e1e;
+        border: 1px solid #4d4635;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .text-gray-light {
+        color: #a3a3a3 !important;
+    }
+
+    .text-light-custom {
+        color: #e5e2e1 !important;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card card-dark-premium p-4 p-md-5">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h2 class="fw-bold text-gold mb-0">Chi Tiết Dịch Vụ</h2>
+                    <span class="badge bg-secondary text-uppercase px-3 py-2" style="letter-spacing: 1px;">Hiệu lực</span>
+                </div>
+
+                <div class="bg-dark p-4 rounded-3 border border-secondary mb-5" style="border-color: #333333 !important;">
+                    <div class="mb-4 border-bottom border-secondary pb-3" style="border-color: #333333 !important;">
+                        <small class="text-gray-light text-uppercase fw-bold" style="letter-spacing: 1px;">Mã Dịch Vụ</small>
+                        <div class="fs-5 text-muted mt-1">#SRV-@Model.Service.ServiceID.ToString("D3")</div>
+                    </div>
+                    <div class="mb-4 border-bottom border-secondary pb-3" style="border-color: #333333 !important;">
+                        <small class="text-gray-light text-uppercase fw-bold" style="letter-spacing: 1px;">Tên Dịch Vụ</small>
+                        <div class="fs-4 text-light-custom fw-semibold mt-1">@Html.DisplayFor(model => model.Service.ServiceName)</div>
+                    </div>
+                    <div>
+                        <small class="text-gray-light text-uppercase fw-bold" style="letter-spacing: 1px;">Mức Giá Hiện Tại</small>
+                        <div class="fs-3 text-gold fw-bold mt-1">@Model.Service.Price.ToString("N0") VNĐ</div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 justify-content-end">
+                    <a asp-page="./Index" class="btn btn-outline-gold px-4 py-2 fw-semibold rounded-1">
+                        Quay lại danh sách
+                    </a>
+                    <a asp-page="./Edit" asp-route-id="@Model.Service.ServiceID" class="btn bg-gold fw-bold px-4 py-2 text-uppercase rounded-1 shadow-sm">
+                        Chỉnh sửa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

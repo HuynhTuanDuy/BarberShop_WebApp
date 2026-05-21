@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BarberShopWeb.Models;
 
-namespace BarberShop.Pages.ServicePages;
+namespace BarberShop.Pages.Services;
 
 public class EditModel : PageModel
 {
@@ -17,14 +17,15 @@ public class EditModel : PageModel
     [BindProperty]
     public Service Service { get; set; } = default!;
 
-    public async Task<IActionResult> OnGetAsync(int? serviceid)
+    // Đã đổi từ serviceid thành id để khớp hoàn toàn với Frontend
+    public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (serviceid is null)
+        if (id is null)
         {
             return NotFound();
         }
 
-        var service = await _context.Services.FirstOrDefaultAsync(m => m.ServiceID == serviceid);
+        var service = await _context.Services.FirstOrDefaultAsync(m => m.ServiceID == id);
         if (service is null)
         {
             return NotFound();
@@ -33,8 +34,6 @@ public class EditModel : PageModel
         return Page();
     }
 
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
@@ -63,8 +62,8 @@ public class EditModel : PageModel
         return RedirectToPage("./Index");
     }
 
-    private bool ServiceExists(int serviceid)
+    private bool ServiceExists(int id)
     {
-        return _context.Services.Any(e => e.ServiceID == serviceid);
+        return _context.Services.Any(e => e.ServiceID == id);
     }
 }

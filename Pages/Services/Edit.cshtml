@@ -1,8 +1,9 @@
-@page
-@model BarberShop.Pages.ServicePages.EditModel
+@page "{id:int}"
+@model BarberShop.Pages.Services.EditModel
 
 @{
-    ViewData["Title"] = "Cập Nhật Dịch Vụ";
+    ViewData["Title"] = "Chỉnh sửa dịch vụ";
+    Layout = null;
 }
 
 <style>
@@ -10,115 +11,94 @@
         background-color: #131313;
         color: #e5e2e1;
         font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
     }
 
-    h2 {
-        font-family: 'Montserrat', sans-serif;
-        color: #e5e2e1;
-    }
-
-    .text-gold {
-        color: #f2ca50 !important;
-    }
-
-    .bg-gold {
-        background-color: #f2ca50;
-        color: #3c2f00;
-        border: none;
-    }
-
-        .bg-gold:hover {
-            background-color: #d4af37;
-            color: #241a00;
-        }
-
-    .card-dark-premium {
+    .card-box {
         background-color: #1e1e1e;
-        border: 1px solid #4d4635;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid #333;
+        border-radius: 8px;
+        width: 450px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    .form-control-dark {
-        background-color: #2a2a2a !important;
-        border: 1px solid #4d4635 !important;
-        color: #e5e2e1 !important;
-        border-radius: 6px;
+    .label-custom {
+        font-size: 11px;
+        font-weight: 700;
+        color: #8a8a8a;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .input-custom {
+        width: 100%;
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 4px;
         padding: 12px;
-        transition: all 0.3s ease;
+        color: #fff;
+        margin-bottom: 20px;
+        box-sizing: border-box;
     }
 
-        .form-control-dark::placeholder {
-            color: #8a8a8a !important;
-            opacity: 1;
-        }
-
-        .form-control-dark:focus {
-            border-color: #f2ca50 !important;
-            box-shadow: 0 0 0 0.25rem rgba(242, 202, 80, 0.25) !important;
+        .input-custom:focus {
+            border-color: #f2ca50;
             outline: none;
         }
 
-    .btn-outline-gold {
-        border: 1px solid #4d4635;
-        color: #d0c5af;
-        transition: all 0.2s;
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
     }
 
-        .btn-outline-gold:hover {
-            background-color: #4d4635;
-            color: #f2ca50;
-        }
-
-    .text-gray-light {
-        color: #a3a3a3 !important;
+    .btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
     }
 
-    .text-light-custom {
-        color: #e5e2e1 !important;
+    .btn-cancel {
+        background: #333;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        padding-top: 14px;
+    }
+
+    .btn-save {
+        background: #f2ca50;
+        color: #131313;
     }
 </style>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card card-dark-premium p-4 p-md-5">
-                <h2 class="fw-bold mb-2 text-center text-gold">Chỉnh Sửa Dịch Vụ</h2>
-                <p class="text-gray-light text-center mb-4 small">Cập nhật lại thông tin định giá hoặc tên gọi của dịch vụ</p>
+<div class="card-box">
+    <h2 style="font-size: 20px; margin-bottom: 25px; color: #f2ca50;">CHỈNH SỬA DỊCH VỤ</h2>
+    <form method="post">
+        <input type="hidden" asp-for="Service.ServiceID" />
 
-                <form method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <label class="label-custom">TÊN DỊCH VỤ</label>
+        <input asp-for="Service.ServiceName" class="input-custom" />
 
-                    <input type="hidden" asp-for="Service.ServiceID" />
+        <label class="label-custom">MỨC GIÁ (VNĐ)</label>
+        <input asp-for="Service.Price" type="number" class="input-custom" />
 
-                    <div class="mb-4">
-                        <label asp-for="Service.ServiceName" class="form-label fw-semibold text-light-custom mb-2">Tên Dịch Vụ</label>
-                        <input asp-for="Service.ServiceName" class="form-control form-control-dark" autocomplete="off" />
-                        <span asp-validation-for="Service.ServiceName" class="text-danger small mt-1 d-block"></span>
-                    </div>
-
-                    <div class="mb-5">
-                        <label asp-for="Service.Price" class="form-label fw-semibold text-light-custom mb-2">Mức Giá (VNĐ)</label>
-                        <input asp-for="Service.Price" type="number" class="form-control form-control-dark" />
-                        <span asp-validation-for="Service.Price" class="text-danger small mt-1 d-block"></span>
-                    </div>
-
-                    <div class="d-flex gap-3 justify-content-end">
-                        <a asp-page="./Index" class="btn btn-outline-gold px-4 py-2 fw-semibold rounded-1">
-                            Hủy bỏ
-                        </a>
-                        <button type="submit" class="btn bg-gold fw-bold px-4 py-2 text-uppercase rounded-1 shadow-sm">
-                            Cập nhật
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <div class="btn-group">
+            <a asp-page="./Index" class="btn btn-cancel">HỦY</a>
+            <button type="submit" class="btn btn-save">LƯU THAY ĐỔI</button>
         </div>
-    </div>
+    </form>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BarberShopWeb.Models;
 
-namespace BarberShop.Pages.ServicePages;
+namespace BarberShop.Pages.Services;
 
 public class DeleteModel : PageModel
 {
@@ -17,14 +17,15 @@ public class DeleteModel : PageModel
     [BindProperty]
     public Service Service { get; set; } = default!;
 
-    public async Task<IActionResult> OnGetAsync(int? serviceid)
+    // Đã đổi serviceid thành id
+    public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (serviceid is null)
+        if (id is null)
         {
             return NotFound();
         }
 
-        var service = await _context.Services.FirstOrDefaultAsync(m => m.ServiceID == serviceid);
+        var service = await _context.Services.FirstOrDefaultAsync(m => m.ServiceID == id);
         if (service is null)
         {
             return NotFound();
@@ -37,14 +38,15 @@ public class DeleteModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(int? serviceid)
+    // Đã đổi serviceid thành id
+    public async Task<IActionResult> OnPostAsync(int? id)
     {
-        if (serviceid is null)
+        if (id is null)
         {
             return NotFound();
         }
 
-        var service = await _context.Services.FindAsync(serviceid);
+        var service = await _context.Services.FindAsync(id);
         if (service != null)
         {
             Service = service;
