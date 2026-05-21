@@ -1,0 +1,228 @@
+﻿@page "{id:int}"
+@model BarberShop.Pages.Staff.EditModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin";
+    Layout = null;
+}
+
+<style>
+    body {
+        background-color: #131313;
+        color: #e5e2e1;
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .card-box {
+        background-color: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 8px;
+        width: 450px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .label-custom {
+        font-size: 11px;
+        font-weight: 700;
+        color: #8a8a8a;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .input-custom {
+        width: 100%;
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 4px;
+        padding: 12px;
+        color: #fff;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+
+        .input-custom:focus {
+            border-color: #f2ca50;
+            outline: none;
+        }
+
+    select.input-custom {
+        appearance: none;
+        cursor: pointer;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .btn-cancel {
+        background: #333;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        padding-top: 14px;
+    }
+
+    .btn-save {
+        background: #f2ca50;
+        color: #131313;
+    }
+
+    input[type="file"] {
+        padding: 8px;
+    }
+
+        input[type="file"]::file-selector-button {
+            background-color: #333;
+            color: #e5e2e1;
+            border: 1px solid #444;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 15px;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+            input[type="file"]::file-selector-button:hover {
+                background-color: #f2ca50;
+                color: #131313;
+                border-color: #f2ca50;
+            }
+
+    .avatar-preview {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid #444;
+    }
+
+    /* CSS cho Checkbox xóa ảnh */
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: -10px;
+        margin-bottom: 20px;
+        font-size: 12px;
+        color: #e28787; /* Màu đỏ nhạt cảnh báo */
+        cursor: pointer;
+    }
+
+    .checkbox-custom {
+        cursor: pointer;
+        accent-color: #e28787;
+        width: 15px;
+        height: 15px;
+    }
+</style>
+
+<div class="card-box">
+    <h2 style="font-size: 20px; margin-bottom: 25px; color: #f2ca50; text-transform: uppercase; letter-spacing: 1px; text-align: center;">Cập nhật tài khoản</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="UserObj.UserID" />
+
+        <label class="label-custom">HỌ VÀ TÊN (FULL NAME)</label>
+        <input asp-for="UserObj.FullName" class="input-custom" required />
+
+        <label class="label-custom">TÊN ĐĂNG NHẬP</label>
+        <input asp-for="UserObj.UserName" class="input-custom" required />
+
+        <label class="label-custom">ẢNH ĐẠI DIỆN (TẢI LÊN TỪ MÁY)</label>
+        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 15px;">
+            <input asp-for="AvatarFile" type="file" class="input-custom" style="flex: 1; margin-bottom: 0;" accept="image/*" onchange="previewImage(event)" id="fileInput" />
+            <img id="imagePreview" src="@(string.IsNullOrEmpty(Model.UserObj.Avatar) ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(Model.UserObj.FullName)}&background=222&color=f2ca50&size=128" : Model.UserObj.Avatar)" class="avatar-preview" alt="Preview" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.UserObj.Avatar))
+        {
+            <label class="checkbox-container">
+                <input type="checkbox" asp-for="DeleteAvatar" class="checkbox-custom" id="deleteAvatarCheck" onchange="handleDeleteCheck()" />
+                Xóa ảnh đại diện hiện tại
+            </label>
+        }
+
+        <div style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label class="label-custom">PHÂN QUYỀN</label>
+                <select asp-for="UserObj.Role" class="input-custom">
+                    <option value="NHÂN VIÊN">Nhân viên (Staff)</option>
+                    <option value="HỌC VIÊN">Học viên (Apprentice)</option>
+                    <option value="QUẢN LÝ">Quản lý (Manager)</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label class="label-custom">TRẠNG THÁI</label>
+                <select asp-for="UserObj.IsActive" class="input-custom">
+                    <option value="1">Đang làm việc (1)</option>
+                    <option value="0">Tạm nghỉ (0)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a asp-page="./Index" class="btn btn-cancel">HỦY BỎ</a>
+            <button type="submit" class="btn btn-save">LƯU THAY ĐỔI</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Xử lý xem trước ảnh
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+        };
+        if(event.target.files[0]){
+            reader.readAsDataURL(event.target.files[0]);
+
+            // Nếu chọn file mới, tự động bỏ tích ô xóa ảnh
+            var deleteCheck = document.getElementById('deleteAvatarCheck');
+            if (deleteCheck) {
+                deleteCheck.checked = false;
+            }
+        }
+    }
+
+    // Xử lý logic khi bấm tích Xóa ảnh
+    function handleDeleteCheck() {
+        var deleteCheck = document.getElementById('deleteAvatarCheck');
+        var fileInput = document.getElementById('fileInput');
+        var output = document.getElementById('imagePreview');
+
+        if (deleteCheck.checked) {
+            // Xóa file đang chọn trong input (nếu có)
+            fileInput.value = "";
+            // Đưa ảnh preview về mặc định
+            var fullName = document.getElementById('UserObj_FullName').value;
+            output.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(fullName) + "&background=222&color=f2ca50&size=128";
+        }
+    }
+</script>

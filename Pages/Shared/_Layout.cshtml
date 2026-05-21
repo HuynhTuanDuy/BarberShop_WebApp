@@ -1,61 +1,243 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<style>
-    .hover-gold:hover {
-        color: #f2ca50 !important;
-        transition: color 0.2s ease;
-    }
-</style>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BarberShop</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - 1995 Barbershop</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BarberShop.styles.css" asp-append-version="true" />
+
+    <style>
+            :root {
+                --bg-dark: #131313;
+                --bg-sidebar: #1a1a1a;
+                --border-color: #333333;
+                --text-main: #e5e2e1;
+                --text-muted: #8a8a8a;
+                --gold: #f2ca50;
+            }
+
+            body {
+                margin: 0;
+                font-family: 'Inter', sans-serif;
+                background-color: var(--bg-dark);
+                color: var(--text-main);
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .app-container {
+                display: flex;
+                height: 100vh;
+            }
+
+            /* SIDEBAR */
+            .sidebar {
+                width: 260px;
+                background-color: var(--bg-sidebar);
+                border-right: 1px solid var(--border-color);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .brand-section {
+                padding: 30px 24px;
+                margin-bottom: 20px;
+            }
+
+                .brand-section h1 {
+                    font-family: 'Montserrat', sans-serif;
+                    color: var(--gold);
+                    font-size: 22px;
+                    font-weight: 800;
+                    margin: 0;
+                    line-height: 1.3;
+                }
+
+            .nav-menu {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                padding: 0;
+                margin: 0;
+                flex-grow: 1;
+            }
+
+            .nav-item {
+                display: flex;
+                align-items: center;
+                padding: 15px 24px;
+                color: var(--text-muted);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                gap: 15px;
+                border-left: 3px solid transparent;
+                transition: all 0.2s;
+            }
+
+                .nav-item:hover {
+                    color: var(--text-main);
+                    background-color: rgba(255,255,255,0.02);
+                }
+
+                .nav-item.active {
+                    color: var(--gold);
+                    border-left-color: var(--gold);
+                    background-color: rgba(242, 202, 80, 0.05);
+                }
+
+            .nav-icon {
+                font-size: 20px;
+            }
+
+            /* HEADER */
+            .main-wrapper {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                background-color: var(--bg-dark);
+            }
+
+            .top-header {
+                height: 70px;
+                border-bottom: 1px solid var(--border-color);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 40px;
+                background-color: var(--bg-dark);
+            }
+
+            .search-container {
+                display: flex;
+                align-items: center;
+                background-color: #1e1e1e;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 10px 15px;
+                width: 400px;
+            }
+
+                .search-container input {
+                    background: transparent;
+                    border: none;
+                    color: var(--text-main);
+                    outline: none;
+                    width: 100%;
+                    margin-left: 10px;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 14px;
+                }
+
+                    .search-container input::placeholder {
+                        color: #666;
+                    }
+
+            .search-icon {
+                color: #666;
+                font-size: 20px;
+            }
+
+            .header-actions {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .action-icon {
+                color: var(--text-muted);
+                cursor: pointer;
+                transition: color 0.2s;
+                font-size: 22px;
+            }
+
+                .action-icon:hover {
+                    color: var(--text-main);
+                }
+
+            .avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background-color: #333;
+                border: 1px solid #444;
+                object-fit: cover;
+            }
+
+            .content-body {
+                padding: 40px;
+                overflow-y: auto;
+                flex-grow: 1;
+            }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom mb-3 shadow-sm" style="background-color: #1e1e1e; border-color: #4d4635 !important;">
-            <div class="container">
-                <a class="navbar-brand fw-bold text-gold" asp-area="" asp-page="/Index">BarberShop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light hover-gold" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-gold fw-semibold" asp-area="" asp-page="/Services/Index">Dịch vụ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light hover-gold" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand-section">
+                <h1>1995<br />BARBERSHOP</h1>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
+
+            @{
+                // Hàm C# nhỏ giúp kiểm tra trang hiện tại có khớp với menu không để gán class 'active'
+                string GetActiveStatus(string pageName)
+                {
+                    var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? "";
+                    // Nếu đang ở trang đó (hoặc các trang con của nó như /Staff/Create), sẽ trả về "active"
+                    return currentPage.StartsWith(pageName, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+                }
+            }
+
+            <nav class="nav-menu">
+                <a href="/Index" class="nav-item @GetActiveStatus("/Index")">
+                    <span class="material-symbols-outlined nav-icon">grid_view</span> Dashboard
+                </a>
+
+                <a href="/Services" class="nav-item @GetActiveStatus("/Services")">
+                    <span class="material-symbols-outlined nav-icon">content_cut</span> Services
+                </a>
+
+                <a href="/Staff" class="nav-item @GetActiveStatus("/Staff")">
+                    <span class="material-symbols-outlined nav-icon">badge</span> Staff
+                </a>
+
+                <a href="/Order" class="nav-item @GetActiveStatus("/Order")">
+                    <span class="material-symbols-outlined nav-icon">shopping_cart</span> Order
+                </a>
+
+                <a href="/Ledger" class="nav-item @GetActiveStatus("/Ledger")">
+                    <span class="material-symbols-outlined nav-icon">menu_book</span> Ledger
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-wrapper">
+            <header class="top-header">
+                <div class="search-container">
+                    <span class="material-symbols-outlined search-icon">search</span>
+                    <input type="text" placeholder="Search..." />
+                </div>
+
+                <div class="header-actions">
+                    <span class="material-symbols-outlined action-icon">notifications</span>
+                    <span class="material-symbols-outlined action-icon">settings</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=333&color=fff" class="avatar" alt="Avatar" />
+                </div>
+            </header>
+
+            <div class="content-body">
+                @RenderBody()
+            </div>
         </main>
     </div>
 
-    <footer class="border-top footer text-muted" style="background-color: #131313; border-color: #4d4635 !important;">
-        <div class="container text-center text-secondary py-3">
-            &copy; 2026 - BarberShop - <a asp-area="" asp-page="/Privacy" class="text-gold text-decoration-none">Privacy</a>
-        </div>
-    </footer>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

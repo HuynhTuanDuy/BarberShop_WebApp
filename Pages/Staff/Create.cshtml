@@ -1,0 +1,190 @@
+﻿@page
+@model BarberShop.Pages.Staff.CreateModel
+
+@{
+    ViewData["Title"] = "Thêm nhân viên mới";
+    Layout = null;
+}
+
+<style>
+    /* ... (CSS giống cũ) ... */
+    body {
+        background-color: #131313;
+        color: #e5e2e1;
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .card-box {
+        background-color: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 8px;
+        width: 450px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .label-custom {
+        font-size: 11px;
+        font-weight: 700;
+        color: #8a8a8a;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .input-custom {
+        width: 100%;
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 4px;
+        padding: 12px;
+        color: #fff;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+
+        .input-custom:focus {
+            border-color: #f2ca50;
+            outline: none;
+        }
+
+    select.input-custom {
+        appearance: none;
+        cursor: pointer;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .btn-cancel {
+        background: #333;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        padding-top: 14px;
+    }
+
+    .btn-save {
+        background: #f2ca50;
+        color: #131313;
+    }
+
+    /* CSS mới làm đẹp nút Chọn file và Ảnh xem trước */
+    input[type="file"] {
+        padding: 8px;
+    }
+
+        input[type="file"]::file-selector-button {
+            background-color: #333;
+            color: #e5e2e1;
+            border: 1px solid #444;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 15px;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+            input[type="file"]::file-selector-button:hover {
+                background-color: #f2ca50;
+                color: #131313;
+                border-color: #f2ca50;
+            }
+
+    .avatar-preview {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid #444;
+        display: none;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="card-box">
+    <h2 style="font-size: 20px; margin-bottom: 25px; color: #f2ca50; text-transform: uppercase; letter-spacing: 1px; text-align: center;">Thêm tài khoản</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        <label class="label-custom">Họ và tên (Full Name)</label>
+        <input asp-for="UserObj.FullName" class="input-custom" placeholder="Ví dụ: Marcus Vance" required />
+
+        <div style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label class="label-custom">Tên đăng nhập</label>
+                <input asp-for="UserObj.UserName" class="input-custom" required />
+            </div>
+            <div style="flex: 1;">
+                <label class="label-custom">Mật khẩu</label>
+                <input asp-for="UserObj.PasswordHash" type="password" class="input-custom" placeholder="***" required />
+            </div>
+        </div>
+
+        <label class="label-custom">ẢNH ĐẠI DIỆN (TẢI LÊN TỪ MÁY)</label>
+        <div style="display: flex; gap: 15px; align-items: flex-start;">
+            <input asp-for="AvatarFile" type="file" class="input-custom" style="flex: 1;" accept="image/*" onchange="previewImage(event)" />
+            <img id="imagePreview" class="avatar-preview" alt="Preview" />
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label class="label-custom">Phân quyền</label>
+                <select asp-for="UserObj.Role" class="input-custom">
+                    <option value="NHÂN VIÊN">Nhân viên (Staff)</option>
+                    <option value="HỌC VIÊN">Học viên (Apprentice)</option>
+                    <option value="QUẢN LÝ">Quản lý (Manager)</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label class="label-custom">Trạng thái</label>
+                <select asp-for="UserObj.IsActive" class="input-custom">
+                    <option value="1">Đang làm việc (1)</option>
+                    <option value="0">Tạm nghỉ (0)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a asp-page="./Index" class="btn btn-cancel">Quay lại</a>
+            <button type="submit" class="btn btn-save">Tạo tài khoản</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block'; 
+        };
+        if(event.target.files[0]){
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+</script>

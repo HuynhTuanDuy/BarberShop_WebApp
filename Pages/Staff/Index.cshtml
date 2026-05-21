@@ -1,11 +1,10 @@
-@page
-@model BarberShop.Pages.Services.IndexModel
+﻿@page
+@model BarberShop.Pages.Staff.IndexModel
 @{
-    ViewData["Title"] = "Service Menu";
+    ViewData["Title"] = "Staff Directory";
 }
 
 <style>
-    /* BÊ NGUYÊN BỘ CSS CHUẨN TỪ TRANG STAFF SANG */
     .section-header {
         display: flex;
         justify-content: space-between;
@@ -51,8 +50,8 @@
             background: rgba(242, 202, 80, 0.05);
         }
 
-    /* ĐỔI TÊN THÀNH SERVICE-CARD NHƯNG GIỮ NGUYÊN KÍCH THƯỚC */
-    .service-card {
+    /* STAFF CARDS */
+    .staff-card {
         background-color: #1a1a1a;
         border: 1px solid #333;
         border-radius: 8px;
@@ -60,48 +59,85 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
-        height: 100%; /* Giúp các card cao bằng nhau */
+        height: 100%;
         transition: border-color 0.2s;
     }
 
-        .service-card:hover {
+        .staff-card:hover {
             border-color: #555;
         }
 
-    .service-header {
+    .staff-info-row {
         display: flex;
-        justify-content: space-between;
         align-items: flex-start;
+        justify-content: space-between;
     }
 
-    .service-name {
+    .staff-profile {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .staff-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid #333;
+    }
+
+    .staff-name {
         font-size: 18px;
         font-weight: 600;
         margin: 0;
         color: #e5e2e1;
     }
 
-    .service-price {
-        font-size: 18px;
-        font-weight: 700;
-        color: #f2ca50;
-        margin: 0;
-    }
-
-    .service-desc {
+    .staff-role {
         font-size: 13px;
-        color: #8a8a8a;
-        margin: 0;
-        line-height: 1.5;
+        color: #f2ca50;
+        margin: 2px 0 6px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
-    .service-footer {
+    .status-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #222;
+        border: 1px solid #333;
+        color: #e5e2e1;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .status-available .status-dot {
+        background-color: #4caf50;
+        box-shadow: 0 0 6px #4caf50;
+    }
+
+    .status-busy .status-dot {
+        background-color: #8a8a8a;
+        box-shadow: 0 0 6px #8a8a8a;
+    }
+
+    .staff-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-top: 1px solid #333;
         padding-top: 15px;
-        margin-top: auto; /* Đẩy footer xuống đáy card */
+        margin-top: auto;
     }
 
     .tags {
@@ -130,6 +166,7 @@
             color: #fff;
         }
 
+    /* Dropdown tùy chỉnh cho nền tối */
     .dropdown-menu-custom {
         background-color: #1e1e1e;
         border: 1px solid #444;
@@ -151,31 +188,46 @@
 
 <div class="section-header">
     <div class="section-title">
-        <h2>Service Menu</h2>
-        <p>Offerings and pricing</p>
+        <h2>Danh sách Nhân viên</h2>
     </div>
     <a asp-page="./Create" class="btn-outline-custom">
-        <span class="material-symbols-outlined" style="font-size: 16px;">add</span> NEW SERVICE
+        <span class="material-symbols-outlined" style="font-size: 16px;">add</span> Thêm NV
     </a>
 </div>
 
 <div class="row">
-    @foreach (var item in Model.Services)
+    @foreach (var item in Model.Users)
     {
         <div class="col-xl-6 col-lg-6 mb-4">
-            <div class="service-card">
-                <div class="service-header">
-                    <h3 class="service-name">@item.ServiceName</h3>
-                    <p class="service-price">@item.Price.ToString("N0") VNĐ</p>
+            <div class="staff-card">
+                <div class="staff-info-row">
+                    <div class="staff-profile">
+                        <img src="@(string.IsNullOrEmpty(item.Avatar) ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(item.FullName)}&background=222&color=f2ca50&size=128" : item.Avatar)" class="staff-avatar" alt="Avatar" />
+                        <div>
+                            <h3 class="staff-name">@item.FullName</h3>
+                            <p class="staff-role">@item.Role</p>
+                            <div class="mt-1" style="font-size: 12px; color: #8a8a8a;">
+                                User: @item.UserName
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (item.IsActive == 1)
+                    {
+                        <div class="status-badge status-available">
+                            <span class="status-dot"></span> Available
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="status-badge status-busy">
+                            <span class="status-dot"></span> Inactive
+                        </div>
+                    }
                 </div>
-
-                <p class="service-desc">
-                    Dịch vụ chăm sóc chuyên nghiệp sử dụng các sản phẩm cao cấp, mang lại trải nghiệm thư giãn tuyệt đối.
-                </p>
-
-                <div class="service-footer">
+                <div class="staff-footer">
                     <div class="tags">
-                        <span class="tag">ID: #@item.ServiceID.ToString("D3")</span>
+                        <span class="tag">ID: #@item.UserID.ToString("D3")</span>
                     </div>
 
                     <div class="dropdown">
@@ -184,14 +236,14 @@
                         </span>
                         <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item dropdown-item-custom d-flex align-items-center gap-2" asp-page="./Edit" asp-route-id="@item.ServiceID">
+                                <a class="dropdown-item dropdown-item-custom d-flex align-items-center gap-2" asp-page="./Edit" asp-route-id="@item.UserID">
                                     <span class="material-symbols-outlined" style="font-size: 16px;">edit</span> Chỉnh sửa
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider" style="border-color: #333;"></li>
                             <li>
-                                <a class="dropdown-item dropdown-item-custom text-danger d-flex align-items-center gap-2" asp-page="./Delete" asp-route-id="@item.ServiceID">
-                                    <span class="material-symbols-outlined" style="font-size: 16px;">delete</span> Xóa dịch vụ
+                                <a class="dropdown-item dropdown-item-custom text-danger d-flex align-items-center gap-2" asp-page="./Delete" asp-route-id="@item.UserID">
+                                    <span class="material-symbols-outlined" style="font-size: 16px;">delete</span> Xóa hồ sơ
                                 </a>
                             </li>
                         </ul>

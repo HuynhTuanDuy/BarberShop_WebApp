@@ -1,0 +1,139 @@
+﻿@page "{id:int}"
+@model BarberShop.Pages.Staff.DeleteModel
+
+@{
+    ViewData["Title"] = "Xác Nhận Xóa Hồ Sơ";
+    Layout = null;
+}
+
+<style>
+    body {
+        background-color: #131313;
+        color: #e5e2e1;
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .modal-box {
+        background-color: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 8px;
+        width: 450px;
+        padding: 24px;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.8);
+    }
+
+    /* Căn chỉnh icon và thẻ h2 trên cùng 1 hàng */
+    .modal-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px; /* Rút ngắn khoảng cách với đoạn văn bản phía dưới */
+    }
+
+    /* Icon chấm than: Chỉnh lại kích thước để vừa vặn với dòng tiêu đề */
+    .icon-alert {
+        color: #ff4d4d;
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin: 0;
+        color: #e5e2e1;
+    }
+
+    /* Tùy chỉnh đoạn văn bản nằm dưới tiêu đề */
+    .desc-text {
+        font-size: 14px;
+        color: #a3a3a3;
+        margin: 0 0 20px 0;
+        line-height: 1.5;
+    }
+
+    .staff-name {
+        color: #f2ca50;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+        border: none;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-cancel {
+        background: #2a2a2a;
+        color: #e5e2e1;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+        .btn-cancel:hover {
+            background: #333;
+            color: #fff;
+        }
+
+    .btn-delete {
+        background: #e28787;
+        color: #131313;
+    }
+
+        .btn-delete:hover {
+            background: #d96e6e;
+        }
+
+    .error-msg {
+        color: #ff4d4d;
+        font-size: 13px;
+        margin-bottom: 20px;
+        padding: 10px;
+        background: rgba(255, 77, 77, 0.1);
+        border-radius: 4px;
+        border: 1px solid rgba(255, 77, 77, 0.3);
+    }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<div class="modal-box">
+    <div class="modal-header">
+        <span class="material-symbols-outlined icon-alert">error</span>
+        <h2>Xóa Hồ Sơ Nhân Viên?</h2>
+    </div>
+
+    <p class="desc-text">Bạn có chắc chắn muốn xóa tài khoản của <span class="staff-name">@Model.UserObj.FullName</span>? Thao tác này không thể hoàn tác.</p>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="error-msg">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    <form method="post">
+        <input type="hidden" asp-for="UserObj.UserID" />
+        <div class="btn-group">
+            <a asp-page="./Index" class="btn btn-cancel">HỦY BỎ</a>
+            <button type="submit" class="btn btn-delete">XÁC NHẬN XÓA</button>
+        </div>
+    </form>
+</div>
