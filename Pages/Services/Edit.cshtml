@@ -1,0 +1,124 @@
+@page
+@model BarberShop.Pages.ServicePages.EditModel
+
+@{
+    ViewData["Title"] = "Cập Nhật Dịch Vụ";
+}
+
+<style>
+    body {
+        background-color: #131313;
+        color: #e5e2e1;
+        font-family: 'Inter', sans-serif;
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        color: #e5e2e1;
+    }
+
+    .text-gold {
+        color: #f2ca50 !important;
+    }
+
+    .bg-gold {
+        background-color: #f2ca50;
+        color: #3c2f00;
+        border: none;
+    }
+
+        .bg-gold:hover {
+            background-color: #d4af37;
+            color: #241a00;
+        }
+
+    .card-dark-premium {
+        background-color: #1e1e1e;
+        border: 1px solid #4d4635;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control-dark {
+        background-color: #2a2a2a !important;
+        border: 1px solid #4d4635 !important;
+        color: #e5e2e1 !important;
+        border-radius: 6px;
+        padding: 12px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control-dark::placeholder {
+            color: #8a8a8a !important;
+            opacity: 1;
+        }
+
+        .form-control-dark:focus {
+            border-color: #f2ca50 !important;
+            box-shadow: 0 0 0 0.25rem rgba(242, 202, 80, 0.25) !important;
+            outline: none;
+        }
+
+    .btn-outline-gold {
+        border: 1px solid #4d4635;
+        color: #d0c5af;
+        transition: all 0.2s;
+    }
+
+        .btn-outline-gold:hover {
+            background-color: #4d4635;
+            color: #f2ca50;
+        }
+
+    .text-gray-light {
+        color: #a3a3a3 !important;
+    }
+
+    .text-light-custom {
+        color: #e5e2e1 !important;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card card-dark-premium p-4 p-md-5">
+                <h2 class="fw-bold mb-2 text-center text-gold">Chỉnh Sửa Dịch Vụ</h2>
+                <p class="text-gray-light text-center mb-4 small">Cập nhật lại thông tin định giá hoặc tên gọi của dịch vụ</p>
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <input type="hidden" asp-for="Service.ServiceID" />
+
+                    <div class="mb-4">
+                        <label asp-for="Service.ServiceName" class="form-label fw-semibold text-light-custom mb-2">Tên Dịch Vụ</label>
+                        <input asp-for="Service.ServiceName" class="form-control form-control-dark" autocomplete="off" />
+                        <span asp-validation-for="Service.ServiceName" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="mb-5">
+                        <label asp-for="Service.Price" class="form-label fw-semibold text-light-custom mb-2">Mức Giá (VNĐ)</label>
+                        <input asp-for="Service.Price" type="number" class="form-control form-control-dark" />
+                        <span asp-validation-for="Service.Price" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="d-flex gap-3 justify-content-end">
+                        <a asp-page="./Index" class="btn btn-outline-gold px-4 py-2 fw-semibold rounded-1">
+                            Hủy bỏ
+                        </a>
+                        <button type="submit" class="btn bg-gold fw-bold px-4 py-2 text-uppercase rounded-1 shadow-sm">
+                            Cập nhật
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

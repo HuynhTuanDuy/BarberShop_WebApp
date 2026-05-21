@@ -1,0 +1,152 @@
+@page
+@model BarberShop.Pages.ServicePages.IndexModel
+
+@{
+    ViewData["Title"] = "Service Management";
+}
+
+<style>
+    body {
+        background-color: #131313;
+        color: #e5e2e1;
+        font-family: 'Inter', sans-serif;
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        color: #e5e2e1; /* Màu trắng xám sáng cho tiêu đề */
+    }
+
+    .text-gold {
+        color: #f2ca50 !important;
+    }
+
+    .bg-gold {
+        background-color: #f2ca50;
+        color: #3c2f00;
+        border: none;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.5px;
+    }
+
+        .bg-gold:hover {
+            background-color: #d4af37;
+            color: #241a00;
+        }
+
+    /* Bảng dữ liệu viền mờ tinh tế hơn */
+    .table-dark-premium {
+        background-color: #1e1e1e;
+        border-color: #333333;
+    }
+
+        /* Xử lý phần Tiêu đề cột (Header) */
+        .table-dark-premium th {
+            background-color: #1a1a1a;
+            color: #a3a3a3 !important; /* XÁM SÁNG: Sửa lỗi chìm chữ */
+            text-transform: uppercase;
+            font-size: 0.75rem; /* Cỡ chữ nhỏ lại giống bản thiết kế */
+            font-weight: 600;
+            letter-spacing: 1.5px; /* Giãn chữ ra cho sang trọng */
+            border-color: #333333;
+            border-bottom: 2px solid #2a2a2a !important;
+        }
+
+        .table-dark-premium td {
+            background-color: transparent;
+            color: #e5e2e1; /* Trắng xám cho tên dịch vụ */
+            border-color: #333333;
+            vertical-align: middle;
+        }
+
+    .table-hover tbody tr:hover td {
+        background-color: #2a2a2a;
+    }
+
+    /* CLASS MỚI: Khắc phục lỗi text-muted của Bootstrap */
+    .text-gray-light {
+        color: #a3a3a3 !important; /* Xám sáng hiển thị cực rõ trên nền đen */
+    }
+
+    /* Nút Icon */
+    .action-icons .btn {
+        opacity: 0;
+        transition: opacity 0.3s ease, background-color 0.2s;
+        color: #a3a3a3;
+        border: none;
+    }
+
+    .table-hover tbody tr:hover .action-icons .btn {
+        opacity: 1;
+    }
+
+    .action-icons .btn:hover {
+        background-color: #333333;
+    }
+
+    .btn-icon-edit:hover {
+        color: #f2ca50 !important;
+    }
+
+    .btn-icon-detail:hover {
+        color: #b4c5ff !important;
+    }
+
+    .btn-icon-delete:hover {
+        color: #ffb4ab !important;
+    }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Service Management</h2>
+        <a asp-page="Create" class="btn bg-gold fw-bold text-uppercase px-4 py-2 shadow-sm rounded-1">
+            + Add New Service
+        </a>
+    </div>
+
+    <div class="table-responsive rounded-3 shadow-lg border" style="border-color: #333333 !important;">
+        <table class="table table-hover table-dark-premium mb-0">
+            <thead>
+                <tr>
+                    <th class="px-4 py-3" style="width: 15%;">Mã DV</th>
+                    <th class="px-4 py-3">Tên Dịch Vụ</th>
+                    <th class="px-4 py-3 text-end">Mức Giá</th>
+                    <th class="px-4 py-3 text-center" style="width: 20%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Service)
+                {
+                    <tr>
+                        <td class="px-4 py-4 text-gray-light">#SRV-@item.ServiceID.ToString("D3")</td>
+
+                        <td class="px-4 py-4 fw-semibold fs-5">
+                            @Html.DisplayFor(model => item.ServiceName)
+                        </td>
+
+                        <td class="px-4 py-4 text-end text-gold fw-bold fs-5">
+                            @item.Price.ToString("N0") VNĐ
+                        </td>
+
+                        <td class="px-4 py-4 text-center action-icons">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a asp-page="./Edit" asp-route-id="@item.ServiceID" class="btn btn-sm btn-icon-edit" title="Chỉnh sửa">
+                                    <span class="material-symbols-outlined fs-5">edit</span>
+                                </a>
+                                <a asp-page="./Details" asp-route-id="@item.ServiceID" class="btn btn-sm btn-icon-detail" title="Chi tiết">
+                                    <span class="material-symbols-outlined fs-5">visibility</span>
+                                </a>
+                                <a asp-page="./Delete" asp-route-id="@item.ServiceID" class="btn btn-sm btn-icon-delete" title="Xóa">
+                                    <span class="material-symbols-outlined fs-5">delete</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
